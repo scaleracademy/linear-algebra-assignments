@@ -51,7 +51,10 @@ def pldu(M):
     U -= np.tril(U, -1)
 
     # M = P_inv.L.D.U
-    return P_inv, L, D, U
+    def numpy_to_py(x):
+        return [list(map(float, row)) for row in x]
+
+    return tuple(map(numpy_to_py, [P_inv, L, D, U]))
 
 
 if __name__ == '__main__':

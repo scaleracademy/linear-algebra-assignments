@@ -14,17 +14,17 @@ def solve(A, b):
     b = np.array(b, dtype=np.double)
     n, m = A.shape
 
-    Ab = np.hstack((A, b))
+    Ab = np.hstack((A, b.reshape(-1, 1)))
     rank_A = np.linalg.matrix_rank(A)
     rank_Ab = np.linalg.matrix_rank(Ab)
     if rank_A != rank_Ab:
         return -1
     if rank_A < n:
         return -2
-    return np.linalg.solve(A, b)
+    return list(map(float, np.linalg.solve(A, b)))
 
 
 def det(A):
     """calculates the determinant of A
     if A is not a square matrix, return 0"""
-    return np.linalg.det(A)
+    return float(np.linalg.det(A))

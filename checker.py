@@ -39,13 +39,13 @@ def _generate_matrix(n, m, rank, max=3):
 
         # sort the rows so that the leftmost 0's are pulled to the top
         # this way, if the matrix is singular, the row reductions require row swaps
-        A = sorted([[x for x in row] for row in A])
+        A = sorted([list(map(float, row)) for row in A])
         if np.linalg.matrix_rank(A) == rank:
             return A
 
 
 def _generate_vector(n, max=3):
-    return list(np.random.randint(-1, max, (n, 1)))
+    return list(map(float, np.random.randint(-1, max, (n, 1))))
 
 
 def generate_non_singular_matrix(max=3):
@@ -64,7 +64,9 @@ def test_pldu():
     def test(A):
         try:
             P, L, D, U = solutions.pldu.pldu(deepcopy(A))
-
+        except Exception:
+            raise
+        try:
             A = np.array(A, dtype=np.double)
             P = np.array(P, dtype=np.double)
             L = np.array(L, dtype=np.double)
@@ -141,13 +143,17 @@ def test_equations():
     def test_solve(A, b):
         try:
             x = solutions.equations.solve(deepcopy(A), deepcopy(b))
-            A = np.array(A, dtype=np.double)
-            b = np.array(b, dtype=np.double)
+        except Exception:
+            raise
+
+        A = np.array(A, dtype=np.double)
+        n, m = A.shape
+        b = np.array(b, dtype=np.double)
+        Ab = np.hstack((A, b.reshape(-1, 1)))
+        rank_A = np.linalg.matrix_rank(A)
+        rank_Ab = np.linalg.matrix_rank(Ab)
+        try:
             x = np.array(x, dtype=np.double)
-            Ab = np.hstack((A, b))
-            n, m = A.shape
-            rank_A = np.linalg.matrix_rank(A)
-            rank_Ab = np.linalg.matrix_rank(Ab)
             if rank_A != rank_Ab:
                 assert x == -1, 'Incorrect result for Inconsistent system of equations'
             elif rank_A < n:
@@ -173,6 +179,9 @@ def test_equations():
     def test_det(A):
         try:
             d = solutions.equations.det(deepcopy(A))
+        except Exception:
+            raise
+        try:
             n, m = len(A), len(A[0])
             if n != m:
                 assert d == 0, 'Incorrect result for non-square matrix'
@@ -232,6 +241,9 @@ def test_simplex():
     def test(A, b, c):
         try:
             x = solutions.simplex.simplex(deepcopy(A), deepcopy(b), deepcopy(c))
+        except Exception:
+            raise
+        try:
             A = np.array(A, dtype=np.double)
             b = np.array(b, dtype=np.double)
             c = np.array(c, dtype=np.double)

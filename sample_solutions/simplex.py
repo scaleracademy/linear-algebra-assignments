@@ -16,4 +16,6 @@ def simplex(A, b, c):
     c = np.array(c, dtype=np.double)
 
     result = linprog(-c, A_ub=A, b_ub=b, bounds=(0, None))
-    return result.x
+    if result.x is None:
+        return None
+    return list(map(float, result.x))
