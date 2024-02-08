@@ -295,6 +295,7 @@ def test_simplex():
 
 
 def check_all():
+    np.random.seed(0)
     test_pldu()
     test_equations()
     test_simplex()
