@@ -73,7 +73,6 @@ def test_pldu():
             D = np.array(D, dtype=np.double)
             U = np.array(U, dtype=np.double)
             n, m = A.shape
-
             assert P.shape == (n, n), 'Shape of P is incorrect'
             assert L.shape == (n, n), 'Shape of L is incorrect'
             assert D.shape == (n, n), 'Shape of D is incorrect'
@@ -181,8 +180,9 @@ def test_equations():
             d = solutions.equations.det(deepcopy(A))
         except Exception:
             raise
+        A = np.array(A, dtype=np.double)
+        n, m = A.shape
         try:
-            n, m = len(A), len(A[0])
             if n != m:
                 assert d == 0, 'Incorrect result for non-square matrix'
             else:
@@ -193,13 +193,11 @@ def test_equations():
             with debug():
                 print('Verdict:', e)
                 print('A')
-                print(np.array(A, dtype=np.double).round(2))
-                d = solutions.equations.det(A)
+                print(A.round(2))
                 print('returned answer')
                 print(d)
                 print('correct answer')
                 print(np.linalg.det(A))
-                print(close(d, np.linalg.det(A)))
             return False
         return True
 
