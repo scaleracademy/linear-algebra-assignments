@@ -45,7 +45,7 @@ def _generate_matrix(n, m, rank, max=3):
 
 
 def _generate_vector(n, max=3):
-    return list(map(float, np.random.randint(-1, max, (n, 1))))
+    return list(map(float, list(np.random.randint(-1, max, (n, 1)))))
 
 
 def generate_non_singular_matrix(max=3):
@@ -296,7 +296,11 @@ def test_simplex():
 
 def check_all():
     np.random.seed(0)
-    # test_pldu()
+    test_pldu()
     test_equations()
-    # test_simplex()
+    test_simplex()
     print('\033[0m')
+
+
+if __name__ == '__main__':
+    check_all()
