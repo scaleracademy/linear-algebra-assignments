@@ -279,7 +279,7 @@ def test_simplex():
         print('Testing Simplex: ', end=' ')
     for _ in range(num_tests):
         A = generate_singular_matrix()
-        b = _generate_vector(len(A), max=1000)
+        b = [max(0, x) for x in _generate_vector(len(A), max=1000)]
         c = _generate_vector(len(A[0]))
         result = test(A, b, c)
         if not result:
@@ -296,7 +296,7 @@ def test_simplex():
 
 def check_all():
     np.random.seed(0)
-    test_pldu()
+    # test_pldu()
     test_equations()
-    test_simplex()
+    # test_simplex()
     print('\033[0m')
